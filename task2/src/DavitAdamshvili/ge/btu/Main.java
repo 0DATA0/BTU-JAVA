@@ -2,8 +2,9 @@ package DavitAdamshvili.ge.btu;
 
 import org.apache.log4j.Logger;
 
-import java.io.File;
+import java.io.*;
 import java.util.Scanner;
+import java.io.FileFilter;
 
 public class Main {
 
@@ -20,12 +21,16 @@ public class Main {
         String keyword = scanner.nextLine();
         logger.info("შემოტანილი სიტყვა: " + keyword);
 
-        String[] fileNameList = file.list();
-
-        for(String fileName : fileNameList){
-            if(fileName.contains(keyword)) {
-                logger.info("მოიძებნა ფაილი: " + fileName);
+        File[] fileList = file.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().contains(keyword);
             }
+        });
+
+
+        for(File currentFile : fileList){
+            logger.info("მოიძებნა : " + currentFile.getName());
         }
 
     }
