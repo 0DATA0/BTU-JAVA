@@ -29,16 +29,24 @@ public class ServerThread extends Thread{
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(clientSocket.getOutputStream());
 
         while (true){
-            Text receivedQuestion = (Text) objectInputStream.readObject();
-            switch (receivedQuestion.getText()){
+            Text receivedText = (Text) objectInputStream.readObject();
+            String receivedQuestion = receivedText.getText();
+            switch (receivedQuestion){
                 case "გამარჯობა":
                     objectOutputStream.writeObject(new Text("მოგესალმებით, რით შემიძლია დაგეხმაროთ?"));
+                    break;
                 case "მაჩვენე კურსი":
                     objectOutputStream.writeObject(new Text("2,75"));
+                    break;
                 case "მაჩვენე ფილიალები":
-                    objectOutputStream.writeObject(new Text(offices.toString()));
+                    objectOutputStream.writeObject(new Text(String.join(",",offices)));
+                    break;
                 case "ნახვამდის":
                     objectOutputStream.writeObject(new Text("გმადლობთ რომ დაგვიკავშირდით, ნახვამდის!"));
+                    objectInputStream.close();
+                    objectOutputStream.close();
+                    clientSocket.close();
+                    break;
                 default:
                     objectOutputStream.writeObject(new Text("სამწუხაროდ ამ კითხვაზე პასუხი არ მაქვს."));
             }

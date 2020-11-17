@@ -17,14 +17,18 @@ public class Client {
 
         while (true){
             Scanner scanner = new Scanner(System.in);
-            String line = scanner.next();
+            String line = scanner.nextLine();
             Text text = new Text(line);
             objectOutputStream.writeObject(text);
             Text receivedText = (Text) objectInputStream.readObject();
             System.out.println(receivedText.getText());
+            if (receivedText.getText().contains("ნახვამდის")){
+                break;
+            }
         }
 
-        //objectOutputStream.close();
-        //socket.close();
+        objectOutputStream.close();
+        objectInputStream.close();
+        socket.close();
     }
 }
